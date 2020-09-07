@@ -1,25 +1,34 @@
 class Bird extends BaseClass {
-  constructor(x,y){
-    super(x,y,50,50);
-    this.image = loadImage("sprites/bird.png");
-    this.smokeImage = loadImage("sprites/smoke.png");
-    this.trajectory =[];
+constructor(x,y){
+  super(x,y,50,50);
+  this.image = loadImage("sprites/bird.png");
+  this.smokeImage = loadImage("sprites/smoke.png");
+  this.trajectory =[];
+  this.seconds=second();
+  this.dead=false;
+  console.log(this.seconds)
+}
+
+display() {
+  //this.body.position.x = mouseX;
+  //this.body.position.y = mouseY;
+if(this.dead===false){
+  super.display();
+
+  if(this.body.velocity.x > 10 && this.body.position.x > 200){
+    var position = [this.body.position.x, this.body.position.y];
+    this.trajectory.push(position);
   }
+  
 
-  display() {
-    //this.body.position.x = mouseX;
-    //this.body.position.y = mouseY;
-
-    super.display();
-
-    if(this.body.velocity.x > 10 && this.body.position.x > 200){
-      var position = [this.body.position.x, this.body.position.y];
-      this.trajectory.push(position);
-    }
-   
-
-    for(var i=0; i<this.trajectory.length; i++){
-      image(this.smokeImage, this.trajectory[i][0], this.trajectory[i][1]);
-    }
+  for(var i=0; i<this.trajectory.length; i++){
+    image(this.smokeImage, this.trajectory[i][0], this.trajectory[i][1]);
   }
+}
+  console.log(((this.seconds+10)%60))
+  if(second()===((this.seconds+10)%60)&& this.dead===false){
+    World.remove(world,this.body);
+    this.dead=true;
+  }
+}
 }
